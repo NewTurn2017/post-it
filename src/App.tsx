@@ -4,6 +4,7 @@ import {
   useMutation,
   useQuery,
 } from 'convex/react'
+import { useAuthActions } from '@convex-dev/auth/react'
 import { api } from '../convex/_generated/api'
 import { SignInForm } from './SignInForm'
 import { SignOutButton } from './SignOutButton'
@@ -33,6 +34,7 @@ export default function App() {
 }
 
 function Content() {
+  const { signOut } = useAuthActions()
   const loggedInUser = useQuery(api.auth.loggedInUser)
   const categories = useQuery(api.notes.listCategories) ?? []
   const notes = useQuery(api.notes.list) ?? []
@@ -196,7 +198,7 @@ function Content() {
 
   // Logout
   function handleLogout() {
-    window.location.reload()
+    void signOut()
   }
 
   if (loggedInUser === undefined) {
